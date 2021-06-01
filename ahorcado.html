@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <title>Ahorcado</title>
+</head>
+
+<style>
+    #pa
+    {
+        background-color: #2E86C1;
+        width : 8rem;
+        height : 8rem;
+        border-right-width: 1em;
+        border-bottom-width: thick;
+        text-align: center;
+        
+    }
+</style>
+<body>
+    <div id="app">
+<div class="grid grid-cols-2 gap-6">
+
+    <div  class="">
+
+        <button  v-on:click="Jugar" class="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-b-4 border-green-700 hover:border-green-500 rounded">
+            Jugar
+          </button>
+<!---<h1>{{this.message}}</h1>-->
+
+      </div>
+      <div  class="">
+
+        <div v-if="!alerta">
+        <span v-for="life in vidas"><font color="green" size="9">{{life}}</font></span>
+        <span><font color="green" size="9">Vidas</font></span>
+    </div>
+    
+    <span><font  size="5">Letras utilizadas:</font></span>
+    <div >
+        <span v-for="adi in adivinar"><font color="blue" size="5">{{adi}}</font></span>
+    </div>
+
+
+        <div v-if="alerta" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Perdiste!</strong>
+            <span class="block sm:inline"> ☹️ Vuelve a intentar.</span>
+            <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+              <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+            </span>
+          </div>
+
+      </div>
+</div>
+        
+          <br>
+          <div v-if="estado" class="flex mb-4">
+
+          <form class="w-full max-w-sm">
+            <div class="flex items-center border-b border-teal-500 py-2">
+              <input v-model="letra" size="1" maxlength="1" class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" placeholder="Ingresa la letra" aria-label="Full name">
+              <button  v-on:click="enviarletra" class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded" type="button">
+               Aceptar
+              </button>
+              <button v-on:click="limpiarcampo" class="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-sm py-1 px-2 rounded" type="button">
+              Borrar
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="flex mb-2">
+
+            <template v-for="item in asteriscos" >
+                <div class="flex items-center border-b border-teal-500 py-2">
+                   
+                    <div id="pa">
+
+                        <div  >
+           
+                        <div ><p><font color="#FDFEFE" size="8">{{item}}</font></p></div>
+                        
+                    </div>
+                    </div>
+                    
+                    
+              </template>
+            
+
+</div>
+</div>
+      </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+    <script>
+var app = new Vue({
+  el: '#app',
+  data: {
+    message: 'Hello Vue!',
+    palabras: ['lapiz', 'lago', 'poster','disco','pluma','mochila','puerta','celular',"pila","manto","reloj","pastel","gato","blusa","aire","latido"],
+    word: "",
+    letra: "",
+    adivinar:[],
+    mostrar: null,
+    indice:null,
+    asteriscos:[],
+    vidas : ["❤️","❤️","❤️"],
+    estado: true,
+    contador : 2,
+    alerta:false,
+    win:0,
+    winf:0
+  },
+  methods: {
+
+Jugar: function ()
+{
+
+
+    console.log(this.letra);
+    //Esta parte nos permite sacar un elemento del array aleatoriamente
+   this.word=this.palabras[Math.floor(Math.random()*this.palabras.length)];
+
+   for (var i = 1; i <= this.word.length ; i++) {
+   
+    //poner asteriscos en el array
+    this.asteriscos.push("*")
+    //pasar el numero del array para compararlo con el contador de ganador
+    this.win=this.word.length;
+}
+
+   //Con esto retornamos el elemento aleatorio de array y lo trasnformamos en string
+   console.log(this.asteriscos)
+    return this.message=Array.from(this.word);
+
+
+},
+
+enviarletra: function ()
+{
+    //Mandamos el valor del input y lo recibimos
+    console.log(this.letra);
+    // Verificamos que el elemento recibido exista en el array lo cual arrojara true o false
+    console.info( this.word.includes( this.letra ) );
+    mostrar=this.word.includes( this.letra );
+    
+
+    // Agregamos las letras ingresadas en nuestro array de adivinar para poder saber que letras llevamos
+   this.adivinar.push( this.letra );
+   if(mostrar==true)//si existe nuestra letra vamos a cambiar nuestro array
+   {
+    //devolvemos el indice del array de la letra que ingresamos para luego cambiarla en el array   
+    console.log(this.word.indexOf(this.letra));
+    this.indice=this.word.indexOf(this.letra);
+    //console.log(this.indice);
+    this.asteriscos.splice(this.indice,1,this.letra);
+    console.log(this.adivinar);
+    //sumar uno en el contador de ganador
+    this.winf=this.winf+1;
+    
+
+   }
+
+   if(mostrar==false)
+   {
+     //Restamos las vidas
+   this.vidas.splice(this.contador,1);
+   this.contador=this.contador-1;
+   }
+
+   
+
+   //Condicion para desaparecer los botones si se pierde
+   if(this.vidas==0)
+   {
+
+    //Cambia los estados para desaparecer algunos elementos
+    this.estado=false;
+    this.alerta=true;
+   }
+
+   //condicion para poder saber si se ganador
+
+   if(this.win==this.winf)
+   {
+       alert("¡Ganaste :D!");
+   }
+
+
+
+  
+   
+    
+},
+
+limpiarcampo : function ()
+{
+    //limpia el input
+    this.letra="";
+
+}
+
+
+}
+})
+
+    </script>
+</body>
+</html>
